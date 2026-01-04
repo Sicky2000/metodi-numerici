@@ -6,7 +6,6 @@
 
 import numpy as np
 
-
 def risolvi_tridiagonale(e, f, g, r):
     """
     e : array (diagonale inferiore/sub-diagonale)

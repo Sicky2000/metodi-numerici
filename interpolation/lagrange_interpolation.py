@@ -32,7 +32,7 @@ def interpolazione_lagrange(x_nodi, y_nodi, x_target):
         # ora moltiplico il polinomio base Li per il valore yi
         termine_corrente = y_nodi[i] * polinomio_base_li
 
-        # aggiungioalla somma totale
+        # aggiungo alla somma totale
         risultato_interpolazione += termine_corrente
 
         # mostro quanto vale Li e quanto contribuisce questo nodo al totale
