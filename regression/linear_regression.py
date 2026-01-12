@@ -1,16 +1,31 @@
 """
-    Autore: Sicky2005
-    Corso: Metodi Numerici per l'Ingegneria
-    Descrizione: Programma per la Regressione con Generazione Grafico
+Modulo per la Regressione Lineare.
+
+Questo modulo implementa il metodo dei minimi quadrati per il calcolo
+della regressione lineare semplice, includendo il calcolo degli errori standard
+e del coefficiente di determinazione R^2.
+
+Autore:      Sicky2005
+Corso:       Metodi Numerici per l'Ingegneria
+Descrizione: Programma per la Regressione (Libreria matematica)
 """
 
-import matplotlib.pyplot as plt
+def linear_regression(x, y):
+    """
+    Esegue la regressione lineare col metodo dei minimi quadrati.
+    Restituisce i coefficienti della retta y = a1*x + a0 e le statistiche di errore.
 
-def lin_reg(x, y):
-    """
-        x (list): Lista dei valori x
-        y (list): Lista dei valori y
-    """
+    Args:
+        x (list): Lista dei valori della variabile indipendente
+        y (list): Lista dei valori della variabile dipendente
+
+    Returns:
+        tuple: (a1, a0, syx, r2)
+            - a1: Pendenza (slope)
+            - a0: Intercetta (intercept)
+            - syx: Errore standard della stima
+            - r2: Coefficiente di determinazione (0 <= r2 <= 1)
+        """
     n = len(x)
 
     # Controllo di sicurezza: servono almeno 3 punti per calcolare syx (n-2)
@@ -27,10 +42,10 @@ def lin_reg(x, y):
 
     # Primo Ciclo (Accumulo Somme)
     for i in range(n):
-        sumx = sumx + x[i]
-        sumy = sumy + y[i]
-        sumxy = sumxy + (x[i] * y[i])
-        sumx2 = sumx2 + (x[i] * x[i])
+        sumx += x[i]
+        sumy += y[i]
+        sumxy += (x[i] * y[i])
+        sumx2 += (x[i] ** 2)
 
     # Calcolo Medie e Coefficienti
     xm = sumx / n
@@ -67,60 +82,3 @@ def lin_reg(x, y):
         r2 = (st - sr) / st
 
     return a1, a0, syx, r2
-
-# GRAFICO
-def disegna_grafico(x, y, a1, a0, r2):
-    # Calcolo i punti della retta per il grafico
-    # Creo una lista di y previsti usando l'equazione y = a1*x + a0
-    y_pred = []
-    for val in x:
-        y_pred.append(a1 * val + a0)
-
-    # Imposto le dimensioni del grafico
-    plt.figure(figsize=(10, 6))
-
-    # Disegno i punti reali (Scatter plot)
-    plt.scatter(x, y, color='blue', s=80, label='Dati Reali (Osservati)', zorder=2)
-
-    # Disegno la retta di regressione (Plot)
-    plt.plot(x, y_pred, color='red', linewidth=2, label=f'Modello: y = {a1:.2f}x + {a0:.2f}', zorder=1)
-
-    # Aggiungo le linee di errore (Residui)
-    # Disegna una linea tratteggiata verticale tra il punto reale e la retta
-    for i in range(len(x)):
-        plt.plot([x[i], x[i]], [y[i], y_pred[i]], color='gray', linestyle='--', alpha=0.5)
-
-    # Etichette e Titolo
-    plt.title(f'Regressione Lineare Semplice\n$R^2$ = {r2:.4f} (Adattamento: {r2 * 100:.1f}%)', fontsize=14)
-    plt.xlabel('Variabile Indipendente (x)', fontsize=12)
-    plt.ylabel('Variabile Dipendente (y)', fontsize=12)
-
-    # Mostro la griglia e la legenda
-    plt.grid(True, linestyle='--', alpha=0.7)
-    plt.legend(fontsize=11)
-
-    # Visualizza il grafico finale
-    plt.show()
-
-# --- MAIN DI ESEMPIO ---
-if __name__ == "__main__":
-    # Dati di input
-    x_val = [1, 2, 3, 4, 5, 6, 7]
-    y_val = [0.5, 2.5, 2.0, 4.0, 3.5, 6.0, 5.5]
-
-    try:
-        # Calcolo numerico
-        slope, intercept, std_err, r_sq = lin_reg(x_val, y_val)
-
-        # Stampa risultati testuali
-        print(f"--- Risultati Numerici ---")
-        print(f"Equazione: y = {slope:.4f}x + {intercept:.4f}")
-        print(f"R^2: {r_sq:.4f}")
-        print(f"Errore Std: {std_err:.4f}")
-        print("Sto generando il grafico...")
-
-        # Visualizzazione grafica
-        disegna_grafico(x_val, y_val, slope, intercept, r_sq)
-
-    except ValueError as e:
-        print(f"Errore: {e}")
