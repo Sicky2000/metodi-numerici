@@ -10,12 +10,12 @@ Corso:       Metodi Numerici per l'Ingegneria
 Descrizione: Programma per il Metodo dei Trapezi
 """
 
-def trap_rule(func, a, b, n):
+def trap_rule(f, a, b, n):
     """
     Calcola l'integrale definito usando la regola del Trapezio composta.
 
     Args:
-        func: La funzione da integrare (deve accettare x e ritornare y)
+        f: La funzione da integrare (deve accettare x e ritornare y)
         a (float): Inizio dell'intervallo
         b (float): Fine dell'intervallo
         n (int): Numero di intervalli
@@ -30,12 +30,12 @@ def trap_rule(func, a, b, n):
     h = (b - a) / n
 
     # Valutazione estremi (f(a) + f(b))
-    somma = func(a) + func(b)
+    somma = f(a) + f(b)
 
     # Sommatoria dei punti interni moltiplicati per 2
     for i in range(1, n):
         x = a + i * h
-        somma += 2 * func(x)
+        somma += 2 * f(x)
 
     # Calcolo finale
     return (h / 2) * somma
